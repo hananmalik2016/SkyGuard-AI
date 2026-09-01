@@ -10,7 +10,7 @@ AWS networks are essential for weather forecasting, climate monitoring, disaster
 
 ## Proposed Solution
 
-SkyGuard AI combines data preprocessing, time-series analysis, statistical quality checks, machine-learning anomaly detection, multivariate consistency checks, and explainability into a real-time pipeline.
+SkyGuard AI combines data preprocessing, time-series analysis, statistical quality checks, machine-learning anomaly detection, **contextual analysis**, and explainability into a real-time pipeline.
 
 ### Core inputs
 - Temperature
@@ -22,14 +22,11 @@ SkyGuard AI combines data preprocessing, time-series analysis, statistical quali
 - Real-time anomaly detection
 - Univariate and multivariate anomaly analysis
 - Detection of spikes, drops, stuck sensors, drift, missing/corrupt observations, and inconsistent combinations of variables
+- **Context-aware analysis to distinguish genuine meteorological events from sensor/data anomalies**
 - Anomaly severity/confidence scoring
 - Explainable alerts
 - Visualization and monitoring dashboard
 - Scalable architecture for multiple AWS stations
-
-## Repository Status
-
-This repository is the initial project scaffold. Implementation will be developed incrementally as the team validates the data pipeline, anomaly-detection methods, evaluation strategy, and prototype architecture.
 
 ## Planned Architecture
 
@@ -47,10 +44,27 @@ Anomaly Detection Engine
    ├── Time-series methods
    └── ML-based detection
    ↓
-Anomaly Score + Type + Explanation
+Contextual Analysis
+   ├── Temporal context
+   ├── Cross-variable relationships
+   ├── Rate-of-change & persistence
+   ├── Meteorological plausibility
+   └── Historical/local patterns
+   ↓
+Context-Aware Decision Layer
+   ├── Genuine meteorological event
+   ├── Sensor fault
+   ├── Data/communication issue
+   └── Uncertain
+   ↓
+Anomaly Score + Classification + Explanation
    ↓
 Dashboard / Alerts / API
 ```
+
+### Why contextual analysis matters
+
+An unusual observation is not automatically a faulty observation. For example, a sudden temperature change may be a genuine meteorological event or a sensor problem. Contextual analysis examines the observation in relation to its surrounding time window, the behavior of the other AWS variables, persistence, rate of change, and meteorological plausibility before the system determines how an anomaly should be classified.
 
 ## Project Structure
 
@@ -65,6 +79,7 @@ SkyGuard-AI/
 │   ├── data/             # Ingestion and preprocessing
 │   ├── features/         # Feature engineering
 │   ├── detection/        # Anomaly detection algorithms
+│   ├── contextual/       # Contextual analysis and event/fault classification
 │   ├── evaluation/       # Metrics and evaluation utilities
 │   └── explainability/   # SHAP/LIME or other explanation utilities
 ├── app/                  # Prototype dashboard/API
@@ -81,12 +96,13 @@ SkyGuard-AI/
 2. Avoid training/evaluating models on contaminated data without a clear methodology.
 3. Evaluate false positives as carefully as anomaly recall.
 4. Preserve temporal ordering when validating time-series models.
-5. Treat genuine extreme weather events differently from sensor/data faults.
-6. Make every alert explainable enough for an operator to investigate.
+5. **Do not classify an unusual observation as a sensor fault without considering its context.**
+6. Treat genuine extreme weather events differently from sensor/data faults.
+7. Make every alert explainable enough for an operator to investigate.
 
 ## Team Goal
 
-Build a working, demonstrable prototype for Smart India Hackathon 2026 that clearly shows the complete pipeline from AWS observations to anomaly detection, explanation, and operator-facing visualization.
+Build a working, demonstrable prototype for Smart India Hackathon 2026 that clearly shows the complete pipeline from AWS observations to anomaly detection, contextual interpretation, explanation, and operator-facing visualization.
 
 ## SIH Reference
 
