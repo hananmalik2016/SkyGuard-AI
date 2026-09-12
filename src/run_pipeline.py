@@ -1,12 +1,17 @@
-import pandas as pd
-from ingestion import fetch_and_process_layer2_feed
+import sys
 import os
+
+# Force Python to look inside the 'src' directory
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import pandas as pd
+from layer2.ingestion import fetch_and_process_layer2_feed
 
 # 1. Create a dummy weather dataset CSV to simulate Layer 2 input feed
 sample_data = {
     "station_id": ["AWS_Agra", "AWS_Agra", "AWS_Agra"],
     "timestamp": ["2020-01-01T00:00:00", "2020-01-01T01:00:00", "2020-01-01T02:00:00"],
-    "temperature": [28.5, 150.0, 22.1],  # 150.0 is an out-of-bounds error
+    "temperature": [28.5, 150.0, 22.1],
     "pressure": [1012.5, 1008.0, 1010.0],
     "humidity": [65.0, 55.0, 70.0]
 }

@@ -1,6 +1,6 @@
 import pandas as pd
 from pydantic import ValidationError
-from Schema import AWSObservation
+from layer1.Schema import AWSObservation
 
 def validate_dataframe(df: pd.DataFrame) -> dict:
     """
